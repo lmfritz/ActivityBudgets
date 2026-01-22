@@ -1,0 +1,21 @@
+project:
+  type: default
+  output-dir: _site
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+
+execute:
+  freeze: auto
+  cache: true
+  warning: false
+  
+jupyter: python3
