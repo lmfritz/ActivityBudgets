@@ -1,0 +1,140 @@
+---
+title: "Activity Budget Analysis - Exploratory Analysis"
+author: "L Fritz"
+date: today
+format:
+  html:
+    code-fold: false
+    toc: true
+    toc-depth: 3
+jupyter: python3
+---
+
+# Introduction
+
+This notebook documents the exploratory analysis of CATS and DTAG data from humpback whales along the Western Antarctic Peninsula. The goal is to analyze activity budgets across over a decade of tag deployments.
+
+## Research Questions
+
+1. How do humpback whales allocate their time between different activities?
+2. Are there temporal patterns in activity budgets?
+3. How do environmental factors influence activity allocation?
+
+# Setup
+
+```{python}
+# Import required libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set plotting style
+sns.set_style("whitegrid")
+plt.rcParams['figure.figsize'] = (12, 6)
+
+# Import local analysis functions
+import sys
+sys.path.insert(0, '../src')
+from activitybudgets import data_loader, analysis, visualization
+```
+
+# Data Loading
+
+This section will load and preprocess the tag data.
+
+```{python}
+# TODO: Load CATS/DTAG data
+# Example:
+# cats_data = data_loader.load_cats_data('../data/raw/example_cats.nc')
+# dtag_data = data_loader.load_dtag_data('../data/raw/example_dtag.mat')
+
+print("Data loading functions ready for implementation")
+```
+
+# Exploratory Data Analysis
+
+## Data Structure
+
+Examine the structure and contents of the loaded tag data.
+
+```{python}
+# TODO: Explore data structure
+# - What sensors are available?
+# - What is the sampling rate?
+# - What is the duration of the deployment?
+
+print("Ready to explore data structure")
+```
+
+## Temporal Patterns
+
+Visualize the temporal patterns in the data.
+
+```{python}
+# TODO: Create timeline visualizations
+# - Accelerometer traces
+# - Depth profile
+# - Activity classifications
+
+print("Ready to visualize temporal patterns")
+```
+
+# Activity Classification
+
+Apply or develop methods to classify whale behaviors from the tag data.
+
+```{python}
+# TODO: Implement behavior classification
+# This may involve:
+# - Using external code from other scientists
+# - Adapting existing algorithms
+# - Developing custom classification approaches
+
+print("Ready to classify behaviors")
+```
+
+# Activity Budget Calculation
+
+Calculate time budgets for different activity types.
+
+```{python}
+# TODO: Calculate activity budgets
+# - Proportion of time in each behavioral state
+# - Statistical summaries
+# - Comparison across individuals/deployments
+
+print("Ready to calculate activity budgets")
+```
+
+# Results and Visualization
+
+Summarize and visualize the activity budget results.
+
+```{python}
+# TODO: Create publication-quality figures
+# - Activity budget pie charts or bar plots
+# - Temporal patterns
+# - Comparative analyses
+
+print("Ready to create visualizations")
+```
+
+# Discussion
+
+## Key Findings
+
+- Finding 1: [To be filled in]
+- Finding 2: [To be filled in]
+
+## Next Steps
+
+1. Refine classification algorithms
+2. Expand analysis to full dataset
+3. Statistical testing
+4. Prepare manuscript figures
+
+# References
+
+- [Add relevant references to CATS/DTAG papers]
+- [Add references to previous activity budget studies]
