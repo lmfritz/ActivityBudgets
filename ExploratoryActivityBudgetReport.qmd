@@ -1,0 +1,341 @@
+---
+title: "Chapter 1 – Activity Budget: A Day in the Life"
+author: "Lauren Fritz"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    code-tools: true
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: true
+  freeze: auto
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| echo: true
+
+# Packages ----
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(glue)
+
+# Optional: consistent plotting defaults
+theme_set(theme_minimal(base_size = 12))
+
+# Reproducibility
+set.seed(123)
+
+# Paths ----
+# Tip: keep a consistent project structure
+paths <- list(
+  data_raw   = "data/raw/",
+  data_clean = "data/clean/",
+  output     = "outputs/ch1/",
+  figs       = "outputs/ch1/figs/"
+)
+
+dir.create(paths$output, recursive = TRUE, showWarnings = FALSE)
+dir.create(paths$figs, recursive = TRUE, showWarnings = FALSE)
+
+```
+
+## 1. Purpose & Questions
+
+<div>
+
+What is the core goal of Chapter 1?
+
+</div>
+
+What counts as “activity budget” here?
+
+What are your primary response variables?
+
+What are your key predictors (demographic class, season timing, etc.)?
+
+### 1.1 Hypotheses / Predictions
+
+H1:
+
+H2:
+
+-   Expected seasonal pattern (e.g., more resting later in season)
+
+## 2. Data Overview
+
+-   Source of CATS tag data
+
+-   Time span (deployments, years, location
+
+-   Sampling window per deployment (4-16 hrs)
+
+-   Any filtering decisions (inclusion/exclusion rules)
+
+```{r}
+#| label: data-dictionary
+#| echo: true
+
+data_dictionary <- tibble::tribble(
+  ~variable, ~description, ~units, ~notes,
+  "animal_id", "Unique whale identifier", NA, "Across deployments if repeated",
+  "deployment_id", "Unique tag deployment", NA, "Tag-level unit",
+  "datetime_utc", "Timestamp", "UTC", "Ensure timezone handling",
+  "behavior_state", "Resting/Traveling/Foraging/Exploring", NA, "Derived classification",
+  "demo_class", "Demographic group", NA, "e.g., male, juvenile, nursing female",
+  "season_day", "Day-of-season index", "days", "Define reference date"
+)
+
+data_dictionary
+
+```
+
+## 3. Processing Steps
+
+```{r}
+#| label: load-data
+# TODO: replace with your real read step
+# tags_raw <- read_csv(file.path(paths$data_raw, "ch1_activity_budget_raw.csv"))
+
+# For now, create placeholder object so the document knits
+tags_raw <- tibble()
+
+```
+
+### 3.1 Quick integrity checks
+
+## 4. Cleaning & Pre-Processing
+
+```{r}
+#| label: clean-data
+
+if (nrow(tags_raw) > 0) {
+  tags <- tags_raw %>%
+    janitor::clean_names() %>%
+    mutate(
+      datetime_utc = ymd_hms(datetime_utc, tz = "UTC"),
+      date_utc = as_date(datetime_utc),
+      behavior_state = factor(behavior_state),
+      demo_class = factor(demo_class)
+    )
+} else {
+  tags <- tags_raw
+}
+
+```
+
+### 4.2 Inclusion/exclusion rules
+
+Remove incomplete deployments, poor-quality sensor segments (?), determine if there is a minimum duration threshold?
+
+```{r}
+#| label: filters
+
+if (nrow(tags) > 0) {
+  tags_filt <- tags %>%
+    filter(!is.na(behavior_state))
+} else {
+  tags_filt <- tags
+}
+
+
+```
+
+## 5. Exploratory Summary
+
+### 5.1 Deployment-level summary
+
+```{r}
+#| label: deployment-summary
+
+if (nrow(tags_filt) > 0) {
+  dep_summary <- tags_filt %>%
+    group_by(deployment_id, animal_id, demo_class) %>%
+    summarize(
+      start = min(datetime_utc, na.rm = TRUE),
+      end   = max(datetime_utc, na.rm = TRUE),
+      duration_hr = as.numeric(difftime(end, start, units = "hours")),
+      n_obs = n(),
+      .groups = "drop"
+    )
+  dep_summary
+}
+
+```
+
+### 5.2 State composition
+
+```{r}
+#| label: state-composition-quick
+
+if (nrow(tags_filt) > 0) {
+  tags_filt %>%
+    count(behavior_state) %>%
+    mutate(prop = n / sum(n)) %>%
+    arrange(desc(n))
+}
+
+```
+
+## 6. Activity Budget Calculation
+
+### 6.1 Budget per deployment
+
+```{r}
+#| label: activity-budget-deployment
+
+if (nrow(tags_filt) > 0) {
+  budget_dep <- tags_filt %>%
+    group_by(deployment_id, animal_id, demo_class, behavior_state) %>%
+    summarize(n = n(), .groups = "drop_last") %>%
+    mutate(prop = n / sum(n)) %>%
+    ungroup()
+
+  budget_dep
+}
+
+```
+
+### 6.2 Budget by demographic group
+
+```{r}
+#| label: plot-budget-demo
+#| fig.width: 8
+#| fig.height: 4
+
+if (exists("budget_dep")) {
+  ggplot(budget_dep, aes(x = demo_class, y = prop, fill = behavior_state)) +
+    geom_col(position = "fill") +
+    labs(x = NULL, y = "Proportion of time", fill = "State",
+         title = "Activity Budget by Demographic Group (Deployment-level)") +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+}
+
+```
+
+## 7. Seasonal Patterns
+
+### 7.1 Define season day/binning
+
+```{r}
+#| label: seasonal-binning
+#| echo: true
+
+# Example: define a reference date for "season day 0"
+season_ref <- as.Date("2025-11-01")  # TODO: set to your actual reference
+
+if (nrow(tags_filt) > 0) {
+  tags_season <- tags_filt %>%
+    mutate(
+      season_day = as.integer(date_utc - season_ref),
+      season_bin = cut(season_day,
+                       breaks = c(-Inf, 30, 60, 90, Inf),
+                       labels = c("Early", "Mid-1", "Mid-2", "Late"))
+    )
+} else {
+  tags_season <- tags_filt
+}
+
+```
+
+### 7.2 Budget by season bin
+
+```{r}
+#| label: budget-season
+
+if (nrow(tags_season) > 0) {
+  budget_season <- tags_season %>%
+    count(season_bin, demo_class, behavior_state) %>%
+    group_by(season_bin, demo_class) %>%
+    mutate(prop = n / sum(n)) %>%
+    ungroup()
+}
+
+
+```
+
+### 7.3 Plot: seasonal change in resting (example)
+
+```{r}
+#| label: plot-resting-season
+#| fig.width: 8
+#| fig.height: 4
+
+if (exists("budget_season")) {
+  budget_season %>%
+    filter(behavior_state == "Resting") %>%
+    ggplot(aes(x = season_bin, y = prop, group = demo_class)) +
+    geom_line() +
+    geom_point() +
+    labs(x = NULL, y = "Proportion resting", title = "Resting Across the Foraging Season")
+}
+
+```
+
+## 8. Modeling Plan 
+
+### 8.1 Candidate models
+
+Response: proportion of time in each state
+
+Predictors: demographic, season timing, deployment duration, year, location
+
+Random effects: whale ID, deployment ID
+
+### 8.2 Notes on compositional data
+
+```{r}
+#| label: modeling-notes
+#| echo: true
+
+modeling_notes <- c(
+  "Decide modeling framework for compositional outcomes.",
+  "Confirm unit of replication (deployment vs individual).",
+  "Plan random effects: (1|animal_id) + (1|year) maybe.",
+  "Check sensitivity to sampling resolution / missingness."
+)
+
+knitr::kable(tibble(note = modeling_notes))
+
+```
+
+## 9. Outputs: save key tables + figures
+
+```{r}
+#| label: save-outputs
+#| echo: true
+
+# Example: write_csv(budget_dep, file.path(paths$output, "budget_by_deployment.csv"))
+
+# Example: ggsave(file.path(paths$figs, "budget_by_demo.png"), width = 8, height = 4, dpi = 300)
+
+```
+
+## 10. Decisions Log/To-Do
+
+22-01-2026: Created GITHUB repository and this Quarto outline draft to help me keep tabs on the stages of my analysis.
+
+git init
+
+git branch -M main
+
+git remote add origin <https://github.com/lmfritz/ActivityBudgets.git>
+
+git pull origin main --allow-unrelated-histories
+
+To-do: obtain Dtag data prior to 2015 and data from Dave Cade
+
+Develop workflow for each tag. What do I actually have to do? I understand conceptually, but what is this going to look like.
+
+> **NOTE (for future me):**\
+> This template is in place and knitting.\
+> Next step is to tailor variable names and joins to the real CATS tag dataset.
