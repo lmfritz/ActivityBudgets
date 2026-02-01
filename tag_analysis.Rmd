@@ -1,0 +1,24 @@
+---
+title: "tag_data_inventory"
+author: "Lauren Fritz"
+date: "2026-02-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+What years exist?
+- 16 DTAG deployments: 2009-2010
+- 72 CATS tag deployments: 2016-2025
+
+Where does the dataset currently live?
+DTAG data is still being located. CATS tag data is on my drive, about to be consolidated today. There is a working master spreadsheet in this repository titled CATS_Tag_Deployments_By_Month_Year
+
+Intended analysis for this chapter
+- Activity budgets
+- Behavioral state classification
+- Time allocation by demohgraphic/season when and if appropriate
+
+
