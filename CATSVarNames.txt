@@ -1,0 +1,55 @@
+
+Notes: 
+All axes are in a North-East-Down (x,y,z) orientation. (Dtag3- accel NEU, Mag NEU)
+Facing up towards gravity gives positive acceleration.  (Dtag3- same)
+Euler angle orientations are calculated in heading, pitch, roll order and are counter-clockwise rotations when facing the plane of rotation from the positive side of the perpendicular axis.
+This means positive pitch is up, positive roll is a roll to the right, and heading is congruent to compass orientation.  (Dtag3- positive roll is to the left)
+raw tag data has both local and UTC time.  Local time in raw data is the time on the computer for which the tags were downloaded. prh files are in whale local time.  Any adjustments from tag time are in the INFO.timedif variable (in hours)
+
+
+At- Acceleration data for each axis (x,y,z) in the tag's reference frame (g's)
+Aw- Acceleration data for each axis rotated to the whale's reference frame
+audon- logical index of where in the data acoustic data was recorded separtely from camera data. For new tags where audio is recorded separately from video data, this is all audio. For old tags, where audio is written on video data, this is only the spots where audio is separate from camera data.
+camon- logical index of where in the data the camera was on
+DN- index of datenumbers corresponding to each data point (Local Time)
+DV- index of datevectors corresponding to each data point (Local Time)
+flownoise- DB value of flownoise in 66-94 Hz band
+fs- sample rate of the data, in Hz
+geoPtrack- [x,y,z] in meters of georeferenced pseudotrack
+GPS- An index of Lat, Long for each position that is known.  This is mostly nans, except where a GPS position is known.  This file is trimmed to include only presumably accurate posisitions that are not obviously wrong (i.e. they fit an approximate pseudotrack).  GPS(1,:) is an approx. GPS of the area, used for calculating inc & dec & b.
+GPSerr- for tagged derived GPS points (not for manual GPS points from focal follows), an error estimate of the std in m.
+GPSI- logical index of which GPS points were used in the final georeferenced pseudotrack (some points are automatically excluded if error threshold is exceeded)
+Gt- Gyroscope data (radians/sec) around each axis (x,y,z) in the tag's reference frame
+Gw- Gyroscope data rotated to the whale's reference frame
+GwUB (not in current workflow)- Gyroscope data in the whale's reference frame with the bias removed for each sample.  
+head- heading of the whale (radians), positive heading is as a compass
+INFO- a structure with some metadata of the prh file creation.  Includes:
+INFO.CAL- first 8 values are bench calibrations, application: (At-aconst)*acal. acal, magcalon/off account for axis orientations in raw data that differ from NED.  Then usually CAL.Acal, Mcal and pc are calibration structures created from in situ calibrations using spherical_cal.m and fix_pressure.m from animaltags.org managed by Mark Johnson/Stacy DeRuiter.  
+INFO.calperiod- datenumbers of the surfacings and dive used to calculate each W
+INFO.calperiodI- indices corresponding to above
+INFO.notes- information on the prh file creation
+INFO.tagprh- the pitch, roll and heading (in radians) of the tag from the whale frame
+INFO.tagslip- indices of when the tag slipped (including tag on and tagoff).  First column is start of slip, second column is end of slip.
+INFO.W- cell with an orientation matrix calculating the rotation of the tag onto the whale (i.e. Aw = At*W for each calibration period)
+INFO.UTC- UTC offset (usually calculated when GPS was added).
+JigRMS- the accelerometer motion in DB re 1 g for all axes, used to calculate speed.JJ.
+Light- light levels (uncalibrated units).  
+LightIR- infrared light levels (uncalibrated units).
+Mt- Magnetometer data for each axis (x,y,z) in the tag's reference frame (uT).
+Mw- Magnetometer data for each axis in the whale's reference frame
+p- pressure (depth) in meters
+Ptrack- [x,y,z] in meters of the pseudotrack
+pitch- pitch of the whale (radians), positive is for an animal ascending to the surface
+roll- roll of the whale (radians), positive is a roll to the animal's right
+speed- a table of speed values from different calculations
+speedstats- a structure containing info on the models used to create the speed table (see speedstats.info).
+speed.FN- speed from flow noise (only when the camera/hydrophone is on and enabled)
+speed.SP- speed from change in depth over sine of pitch (OCDR)
+speed.JJ- speed from the amplitude of tag vibrations (tag jiggle, see Cade et al. 2018 JEB).  Probably best but be sure to exlude surfacings (spikes in speed at those points)
+T- temperature (CATS tags have a variety of temp sensors including internal and external sensors, you will want to ensure this value is what you are looking for)
+tagon- logical index indicating when the tag was on the whale
+viddeploy- the videos recording time when the tag was on the whale
+vidDN- datenumbers of the start of the videos
+vidDurs- length of the videos (seconds)
+vidNam- names of the videos
+
