@@ -21,7 +21,7 @@
 % Threshold defining the minimum magnitude (default is 1) of a tailbeat (MagThresh).
 % Threshold (default is 10) used to compare the area under the curve for the upstroke and downstroke of a tailbeat to ensure that it is not too top- or bottom-heavy (ClarityThresh).
 
-function [FlukingOverlay Tailbeats] = TailbeatDetect(InertialData,fs,Depth,Pitch,Roll,Heading,SurfaceThresh,Speed,DurThresh,HeightThresh,MagThresh,ClarityThresh, Lowpass, Highpass) % need switch to tell if gyro or accl for InertialData
+function [FlukingOverlay Tailbeats] = WhenFluking(InertialData,fs,Depth,SurfaceThresh,Speed,DurThresh,HeightThresh,MagThresh,ClarityThresh) % need switch to tell if gyro or accl for InertialData
 
 NaNs = find(isnan(InertialData)==1); % This finds all of the nan positions, making it easier to align the inertial sensing data with the depth and speed data, if using either.
 InertialData(NaNs,:) = []; % If you have not removed NaNs from your inertial sensing data, this will do that for you.
@@ -30,17 +30,12 @@ InertialData(NaNs,:) = []; % If you have not removed NaNs from your inertial sen
 % empty variables or default values for the rest.
 if nargin < 2 || isempty(fs); fs = 10; disp ('Set Sample Rate To 10'); end % If no sample rate is give, will default to 10Hz.
 if nargin < 3 || isempty(Depth); Depth = []; disp('No Depth Data Provided'); end % If no depth data is give, will provide empty variable.
-if nargin < 4 || isempty(Pitch); Pitch = []; disp('No Pitch Data Provided'); end % If no pitch data is give, will provide empty variable.
-if nargin < 5 || isempty(Roll); Roll = []; disp('No Roll Data Provided'); end % If no roll data is give, will provide empty variable.
-if nargin < 6 || isempty(Heading); Heading = []; disp('No Heading Data Provided'); end % If no heading data is give, will provide empty variable.
-if nargin < 7 || isempty(SurfaceThresh); SurfaceThresh = 2; end % Threshold that denotes surface vs. deep tailbeats.
-if nargin < 8 || isempty(Speed); Speed = []; disp('No Speed Data Provided'); end % If no speed data is give, will provide empty variable.
-if nargin < 9 || isempty(DurThresh); DurThresh = 100; disp('Using Default Threshold Values'); end % If no thresholds are provided, will use default values (10s for tailbeat maximum duration).
-if nargin < 10 || isempty(HeightThresh); HeightThresh = 0; end % Height of tailbeat (minumum distance away from zero value) set to 0 as placeholder - will be changed later.
-if nargin < 11 || isempty(MagThresh); MagThresh = 1; end % This threshold makes sure that the magnitude of the tailbeat is above a value - set to 1 as a default.
-if nargin < 12 || isempty(ClarityThresh); ClarityThresh = 10; end % This threshold ensures that the upstroke and downstroke are within a given multiple of one another - set to 10 as a default.
-if nargin < 13 || isempty(Lowpass); Lowpass = 0.5; end % This threshold sets the lowpass frequency and will filter out any high frequency noise from your dataset - set to 0.5 Hz as a default.
-if nargin < 14 || isempty(Highpass); Highpass = 0.1; end % This threshold sets the highpass frequency and will filter out any low frequency body motions from your dataset - set to 0.1 Hz as a default.
+if nargin < 4 || isempty(SurfaceThresh); SurfaceThresh = 2; end % Threshold that denotes surface vs. deep tailbeats.
+if nargin < 5 || isempty(Speed); Speed = []; disp('No Speed Data Provided'); end % If no speed data is give, will provide empty variable.
+if nargin < 6 || isempty(DurThresh); DurThresh = 100; disp('Using Default Threshold Values'); end % If no thresholds are provided, will use default values (10s for tailbeat maximum duration).
+if nargin < 7 || isempty(HeightThresh); HeightThresh = 0; end % Height of tailbeat (minumum distance away from zero value) set to 0 as placeholder - will be changed later.
+if nargin < 8 || isempty(MagThresh); MagThresh = 1; end % This threshold makes sure that the magnitude of the tailbeat is above a value - set to 1 as a default.
+if nargin < 9 || isempty(ClarityThresh); ClarityThresh = 10; end % This threshold ensures that the upstroke and downstroke are within a given multiple of one another - set to 10 as a default.
 
 if ~isempty(Depth); Depth(NaNs,:) = []; end
 if ~isempty(Speed); Speed(NaNs,:) = []; Speed(isnan(Speed)) = 0; end
@@ -49,8 +44,8 @@ if ~isempty(Speed); Speed(NaNs,:) = []; Speed(isnan(Speed)) = 0; end
 % over the inertial sensing data (InertialData) and provide a filtered
 % version of the same data called (InertialDataFilt).
 N = 10; % order
-Fpasslow = Lowpass; % lowpass filter passband frequency
-Fstoplow = Lowpass+0.1; % lowpass filter stopband frequency
+Fpasslow = 0.3; % lowpass filter passband frequency
+Fstoplow = 0.8; % lowpass filter stopband frequency
 Wpasslow = 0.1; % passband weight
 Wstoplow = 0.1; % stopband weight
 denslow  = 20; % density factor
@@ -59,8 +54,8 @@ blow  = firpm(N, [0 Fpasslow Fstoplow fs/2]/(fs/2), [1 1 0 0], [Wpasslow Wstoplo
 Hdlow = dfilt.dffir(blow);
 InertialDataFilt = filtfilt(blow,1,InertialData); % lowpass filters the dataset
 
-Fstophigh = Highpass-0.1;    % Highpass Filter Stopband Frequency
-Fpasshigh = Highpass;   % Highpass Filter Passband Frequency
+Fstophigh = 0.072;    % Highpass Filter Stopband Frequency
+Fpasshigh = 0.1368;   % Highpass Filter Passband Frequency
 Dstophigh = 0.0001;          % Stopband Attenuation
 Dpasshigh = 0.057501127785;  % Passband Ripple
 denshigh  = 20;              % Density Factor
@@ -82,8 +77,6 @@ if ~isempty(Speed);
            {denslow});
     Hdlow = dfilt.dffir(blow);
     SpeedFilt = filtfilt(blow,1,Speed); % lowpass filters the jiggle speed
-else
-    SpeedFilt = [];
 end
 
 %This segment will start set a "zero crossing" value and define tailbeats
@@ -225,9 +218,6 @@ if ~isempty(Depth);
     disp('Number of Tailbeats Measured (Only Beats Below Surface Threshold): ');
     disp(length(useableflukebeatsDeep(:,3)));
 end
-
-useableflukebeatsSteady = [];
-if
 
 % This segment creates the Tailbeats variable with the start position, end
 % position, oscillatory frequency, mean depth (if depth data is
