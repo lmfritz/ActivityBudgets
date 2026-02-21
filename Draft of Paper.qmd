@@ -1,0 +1,51 @@
+---
+title: "Distinguishing behavioral states and interseasonal temporal variation in the activity budgets of humpback whales along the Western Antarctic Peninsula""
+subtitle: "Optional Subtitle"
+author:
+  - name: Lauren Fritz
+    affiliation: University of California Santa Cruz
+    email: lmfritz@ucsc.edu
+    corresponding: true
+  - name: Ari Friedlaender
+    affiliation: University of California Santa Cruz
+date: last-modified
+format:
+  pdf:
+    documentclass: article
+    keep-tex: true
+    number-sections: true
+    linenumbers: true
+  docx:
+    reference-doc: template.docx # Optional: custom MS Word template
+  html:
+    toc: true
+    code-fold: true
+bibliography: references.bib
+csl: apa.csl # Optional: specify citation style
+editor_options: 
+  chunk_output_type: console
+---
+
+# Abstract
+
+Enter your abstract here.
+
+# Introduction
+
+Introduction text. Reference a paper here [@reference_key].
+
+# Methods
+
+Methods section, including data collection and analysis details.
+
+## Data Preparation
+
+\`\`\`{r} #\| label: setup #\| include: false library(ggplot2) library(dplyr) \# Load data here
+
+---
+title: "Draft of Peer Reviewed Paper"
+format: html
+editor: visual
+---
+
+## 

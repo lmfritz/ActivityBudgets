@@ -186,8 +186,6 @@ if (nrow(tags_filt) > 0) {
 
 ```
 
-## 6. Activity Budget Calculation
-
 ### 6.1 Budget per deployment
 
 ```{r}
@@ -221,6 +219,20 @@ if (exists("budget_dep")) {
 }
 
 ```
+
+**For Methods:**
+
+**Define the problem**
+Resting is distinct from both foraging and travel in kinematics and ecological function.”
+
+> **Review precedent** Cite the papers above that define resting with depth and kinematics.
+>
+> **State your operational definition** Shallow depth (\<10 m) + absence of feeding lunges + low vertical and horizontal movement sustained for ≥60 s
+>
+> **Justify thresholds with literature** Use percentile thresholds informed by data but constrained by biological expectations (see Watanabe 2019, Christiansen 2022)
+>
+> **Compare to alternatives**
+> Explain why previous heuristic methods (e.g., lowest 20th movement percentile at surface) may underrepresent resting.
 
 ## 7. Seasonal Patterns
 
@@ -281,7 +293,7 @@ if (exists("budget_season")) {
 
 ```
 
-## 8. Modeling Plan 
+## 8. Modeling Plan
 
 ### 8.1 Candidate models
 
@@ -290,6 +302,10 @@ Response: proportion of time in each state
 Predictors: demographic, season timing, deployment duration, year, location
 
 Random effects: whale ID, deployment ID
+
+How to pick a model? What is the goal of the analysis -0 exploration, inference, or prediction? For both the analysis of the seasonal changes in activity budget and further classification of dive types within the foraging behavioral state, we will be exploring the patterns in the data. Inference could happen in future studies.
+
+What is the model purpose:
 
 ### 8.2 Notes on compositional data
 
