@@ -65,11 +65,12 @@ What are your key predictors (demographic class, season timing, etc.)?
 
 ### 1.1 Hypotheses / Predictions
 
-H1:
+H1: We hypothesize that whales...
 
 H2:
 
 -   Expected seasonal pattern (e.g., more resting later in season)
+-   To investigate these hypotheses, we selected a set of parameters based on literature and tag data to descirbe the underwater movement and behavior of humpback whales.
 
 ## 2. Data Overview
 
@@ -174,6 +175,18 @@ if (nrow(tags_filt) > 0) {
 
 ### 5.2 State composition
 
+Variables used to characterize the foraging dive bin : presence of at least one lunge during dive. Foraging dives are the easiest to identify
+
+-   **A way to separate “routine inter-dive surfacing” from “extended non-foraging bouts”**, and then
+
+-   
+
+-   
+
+    Use **movement + depth pattern** inside those extended bouts to decide “resting vs traveling/exploring.”
+
+-   
+
 ```{r}
 #| label: state-composition-quick
 
@@ -222,8 +235,7 @@ if (exists("budget_dep")) {
 
 **For Methods:**
 
-**Define the problem**
-Resting is distinct from both foraging and travel in kinematics and ecological function.”
+**Define the problem** Resting is distinct from both foraging and travel in kinematics and ecological function.”
 
 > **Review precedent** Cite the papers above that define resting with depth and kinematics.
 >
@@ -231,8 +243,7 @@ Resting is distinct from both foraging and travel in kinematics and ecological f
 >
 > **Justify thresholds with literature** Use percentile thresholds informed by data but constrained by biological expectations (see Watanabe 2019, Christiansen 2022)
 >
-> **Compare to alternatives**
-> Explain why previous heuristic methods (e.g., lowest 20th movement percentile at surface) may underrepresent resting.
+> **Compare to alternatives** Explain why previous heuristic methods (e.g., lowest 20th movement percentile at surface) may underrepresent resting.
 
 ## 7. Seasonal Patterns
 
