@@ -3,29 +3,34 @@ title: "tag_data_inventory"
 author: "Lauren Fritz"
 date: "2026-02-01"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-What years exist?
-- 16 DTAG deployments: 2009-2010
-- 72 CATS tag deployments: 2016-2025
+What years exist? - 16 DTAG deployments: 2009-2010 - 72 CATS tag
+deployments: 2016-2025
 
-Where does the dataset currently live?
-DTAG data is still being located. CATS tag data is on my drive, about to be consolidated today. There is a working master spreadsheet in this repository titled CATS_Tag_Deployments_By_Month_Year
+Where does the dataset currently live? DTAG data is still being located.
+CATS tag data is on my drive, about to be consolidated today. There is a
+working master spreadsheet in this repository titled
+CATS_Tag_Deployments_By_Month_Year
 
-Intended analysis for this chapter
-- Activity budgets
-- Behavioral state classification
-- Time allocation by demohgraphic/season when and if appropriate
+Intended analysis for this chapter - Activity budgets - Behavioral state
+classification - Time allocation by demohgraphic/season when and if
+appropriate
 
-February 19. 2026
-Downloaded MATLAB update
+February 19. 2026 Downloaded MATLAB update
 
-February 20, 2026
-Opened MATLAB to change SimpleLungeDetectionBehaviorState.m code for my purposes. I created a new file called SimpleBehaviorStateActivityBudget.m by cloning the other, and am using ChatGPT to help me identify pieces of the code that need to be editted to account now for four behavioral states instead of just trying to identify foraging lunges. 
-I also added MATLAB to the github aka created a MATLAB project that is linked to my Activity Budget github. It is saved on the Tag Data harddrive NAN_Backup. 
-
-
+February 20, 2026 Opened MATLAB to change
+SimpleLungeDetectionBehaviorState.m code for my purposes. I created a
+new file called SimpleBehaviorStateActivityBudget.m by cloning the
+other, and am using ChatGPT to help me identify pieces of the code that
+need to be editted to account now for four behavioral states instead of
+just trying to identify foraging lunges. I also added MATLAB to the
+github aka created a MATLAB project that is linked to my Activity Budget
+github. It is saved on the Tag Data harddrive NAN_Backup.
