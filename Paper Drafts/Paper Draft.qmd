@@ -1,0 +1,286 @@
+---
+title: "The Activity Budget of Antarctic Humpback Whales - Energetic Priorities & Seasonal Fluctuations"
+author: "Lauren M. Fritz"
+format: 
+  html:
+    toc: true
+    number-sections: true
+    theme: cosmo
+  pdf:
+    toc: true
+    number-sections: true
+execute: 
+  echo: false
+  warning: false
+  message: false
+bibliography: references.bib
+csl: marine-mammal-science.csl
+---
+
+# Abstract
+
+<!-- Write this last. 250–300 words. -->
+
+```{=html}
+<!-- Core elements:
+- Context (why activity budgets matter)
+- Gap (lack of fine-scale undisturbed allocation data)
+- Data (10 years CATS tags, ~100 animals)
+- Methods (behavioral state classification)
+- Key results (high-level patterns)
+- Implications (energetics, disturbance sensitivity, conservation)
+-->
+```
+
+# 1. Introduction
+
+## 1.1 Activity Budgets in Behavioral Ecology
+
+-   Definition of activity budgets\
+-   Why time allocation matters (fitness, survival, trade-offs)\
+-   Classic theory: optimal foraging, life-history trade-offs. Quantifying energy expenditure and intake in large migratory marine animals by assessing the temporal allocation to different behavioral states is of critical importance for understanding how these animals survive in challenging environments (Watanabe 2021). \
+-   Examples from terrestrial and marine systems. Penguin example (Watanabe 2020), polar bear example (Pagano 2018)
+-   Importance
+    -   Environmental changes are occuring more rapidly than ever before (find some crazy statistic and throw it in here). Understanding animal activity budgets allows us to understand the trends in population health by providing behavioral context, which is also useful for enacting relevant conservation measures when necessary (Watanabe 2021).
+
+> Placeholder for citations
+
+## 1.2 Activity Budgets in Marine Mammals
+
+-   Constraints of the aquatic environment\
+-   Diving physiology and behavioral trade-offs\
+-   Examples in odontocetes vs mysticetes
+    -   
+-   Limitations of observation-based studies
+    -   Challenging if not impossible to study large marine mammals in the same way that smaller mammals are studied under controlled conditions. Biologging tools allow us to step past this logistical barrier and apply kinematic physiological, and theoretical approaches to estimate energy expenditure and time spent in various states of behavior. (Watanabe 2021).
+
+> Literature to integrate as you go
+
+## 1.3 Humpback Whales in the Western Antarctic Peninsula (WAP)
+
+-   Rapid population recovery\
+-   Seasonal foraging ecology\
+-   Environmental variability (sea ice, krill)\
+-   Tourism overlap
+
+> This connects directly to your Chapter 2 later
+
+## 1.4 The Need for Fine-Scale, Undisturbed Behavioral Allocation
+
+-   Limitations of focal follows and vessel-based observation\
+-   Advantages of biologging
+    -   Used to study behavioral energetics for free-ranging, large marine mammals (Watanabe 2021)\
+-   Why CATS tags provide a step forward
+
+## 1.5 Objectives and Predictions
+
+Clearly state:
+
+1.  Quantify proportional time allocation across behavioral states\
+2.  Compare allocation across demographic classes\
+3.  Characterize diel or deployment-scale variability
+
+Optional hypotheses:
+
+-   Nursing females allocate more time to resting\
+-   Juveniles show greater exploratory allocation\
+-   Resting occurs predominantly in shallow surface sequences
+
+------------------------------------------------------------------------
+
+# 2. Methods
+
+## 2.1 Study Area
+
+-   Fieldwork was conducted along the Western Antarctic Peninsula during austral summer field seasons.\
+-   Seasonal context\
+-   Map figure placeholder
+
+```{r}
+#| label: fig-map
+#| fig-cap: "Study area along the Western Antarctic Peninsula."
+# Map placeholder
+```
+
+## 2.2 Tag Deployments and Data Collection
+
+-   CATS suction-cup biologging tags
+
+-   Sampling frequency: \_\_\_Hz
+
+-   Deployment duration: \_\_hours
+
+-   Total individuals: \_\_\_
+
+-   Total deployments:\_\_\_
+
+```{r}
+#| label: tbl-deployments
+#| tbl-cap: "Summary of tag deployments by year and demographic class."
+# Deployment summary table placeholder
+```
+
+## 2.3 Data Processing
+
+#### Dive Detection
+
+#### Lunge Detection
+
+#### Behavioral State Classification
+
+-   Foraging: Dive containing ≥1 lunge (whole dive labeled).
+-   Traveling: Dive with max depth 10–50 m and no lunges.
+-   Resting: Surface interval (0–10 m), low movement.
+-   Exploring: All remaining tag-on time.
+
+```{r}
+#| label: fig-classification
+#| fig-cap: "Conceptual workflow for behavioral state classification."
+# Diagram placeholder
+```
+
+## 2.4 Activity Budget Calculation
+
+## 2.5 Statistical Analyses
+
+Analyses included:
+
+-   Mixed-effects models to compare demographic groups
+
+-   Year as a random or fixed effect
+
+-   Sensitivity analyses for deployment duration
+
+# 3. Results
+
+## Overall Activity Allocation
+
+Report: mean propotion +/- CI
+
+Ranking of dominant behaviors with seasonal context
+
+```{r}
+#| label: fig-overall-budget
+#| fig-cap: "Overall proportional time allocation across behavioral states."
+# Plot placeholder
+```
+
+## Demographic Comparisons
+
+Highlight key contrasts:
+
+-   nursing females vs. others
+
+-   juveniles vs adults
+
+```{r}
+#| label: fig-demographic
+#| fig-cap: "Activity budgets across demographic groups."
+# Plot placeholder
+```
+
+## Bout Structure
+
+```{r}
+#| label: fig-bout
+#| fig-cap: "Distribution of bout durations by behavioral state."
+# Histogram placeholder
+```
+
+Distribution of bout durations by behavioral state and by month
+
+-   median bout duration
+
+-   95th percentile
+
+-   Surface interval characteristics
+
+## Interannual Variability (Optional)
+
+```{r}
+#| label: fig-year
+#| fig-cap: "Interannual variation in behavioral allocation."
+# Year comparison placeholder
+```
+
+# 4. Discussion
+
+#### Baseline Behavioral Allocation
+
+-   What constitutes a “typical day” in Antarctic foraging habitat?
+
+Compare to:
+
+-   Other feeding grounds
+
+-   Other mysticete species
+
+#### Energetic and Ecological Implications
+
+Interpret allocation in terms of:
+
+-   Energy acquisition
+
+-   Recovery
+
+-   Reproductive condition
+
+-   Environmental variability
+
+#### Comparison with Previous Studies
+
+Contrast with:
+
+-   Observation-based activity budgets
+
+-   Other tag-based studies
+
+-   Regional differences
+
+#### Implications for Disturbance Sensitivity
+
+-   Establish how baseline resting proportion informs experimental exposure results (Chapter 2).
+
+-   If whales allocate X% of time to resting, disruption of this state may carry energetic consequences.
+
+#### Limitations
+
+-   Deployment duration bias
+
+-   Classification uncertainty
+
+-   Sampling frequency constraints
+
+#### Future Directions
+
+-   Integration with body condition metrics (Chapter 3)
+
+-   Environmental drivers (sea ice, krill density)
+
+-   Population-level energetic modeling
+
+# 5. Conclusions
+
+Summarize:
+
+-   Core findings
+
+-   Ecological interpretation
+
+-   Conservation relevance
+
+# 6. Acknowledgements
+
+# 7. References
+
+```         
+```
+
+```         
+```
+
+```         
+```
+
+```         
+```

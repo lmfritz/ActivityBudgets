@@ -181,9 +181,7 @@ Variables used to characterize the foraging dive bin : presence of at least one 
 
 -   
 
--   
-
-    Use **movement + depth pattern** inside those extended bouts to decide “resting vs traveling/exploring.”
+-   Use **movement + depth pattern** inside those extended bouts to decide “resting vs traveling/exploring.”
 
 -   
 

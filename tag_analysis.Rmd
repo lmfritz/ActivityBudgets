@@ -70,184 +70,39 @@ Define:
 
 -   state switching only occurs at dive boundaries
 
-Daily Research Summary – Behavioral State Classification Refinement
-Objective
+## Daily Research Log
+
+### Behavioral State Classification Refinement
+
+#### Objective
 
 Refine automated behavioral state classification for humpback whale PRH
-deployments to align with biologically grounded definitions of foraging,
-traveling, resting, and exploring.
+deployments.
 
-1.  Lunge Integration and Foraging Definition
+#### Scientific Decisions
 
-Scientific decision:
+-   Foraging: Dive containing ≥1 lunge (whole dive labeled).
+-   Traveling: Dive with max depth 10–50 m and no lunges.
+-   Resting: Surface interval (0–10 m), low movement.
+-   Exploring: All remaining tag-on time.
 
-Foraging dives are defined as any dive containing ≥1 expert-audited
-lunge.
+#### Coding Work Completed
 
-Use previously created lunges files (expert-reviewed) rather than
-re-detecting lunges.
+-   Implemented robust lunge file matching via time overlap.
+-   Standardized LungeDN → sample index mapping.
+-   Rewrote classifier into a single dive-bounded logic block.
+-   Removed legacy variables and duplicate classifiers.
+-   Added diagnostics for dive detection and resting bout structure.
 
-Entire dive labeled as “foraging” if any lunge occurs within dive
-bounds.
+#### Resting Diagnostics
 
-Coding work completed:
+-   66,469 candidate resting samples.
+-   P95 bout duration = 0.6 s.
+-   No bouts ≥60 s.
+-   Indicates movement thresholding is too fragmented at 10 Hz.
 
-Implemented robust lunges file selection based on time overlap with PRH
-DN.
+#### Outstanding Questions
 
-Standardized mapping from LungeDN (datenum) → PRH sample indices (LI).
-
-Ensured lunges are clipped to tag-on interval.
-
-Removed redundant logic that accidentally wiped LI.
-
-Verified lunges are correctly recognized and producing \>0% foraging
-time.
-
-2.  Dive-Bounded State Logic
-
-Scientific decision:
-
-Behavioral state switches only occur at the beginning or end of dives.
-
-Dive definition updated to match behavioral thresholds.
-
-Definitions implemented:
-
-State Definition Foraging Dive with ≥1 lunge (whole dive labeled)
-Traveling Dive with max depth 10–50 m AND no lunges (whole dive labeled)
-Resting Surface intervals only (0–10 m), low movement Exploring All
-remaining tag-on time
-
-Key refinement:
-
-Adjusted dive start threshold to 10 m to align with resting band (0–10
-m).
-
-Ensured resting cannot occur within dives.
-
-Coding work completed:
-
-Rewrote classifier into a single clean block.
-
-Removed legacy isForage, nonForage, and duplicate dive logic.
-
-Ensured state is defined once and not overwritten.
-
-Added diagnostic checks for dive detection and state assignment
-consistency.
-
-3.  Resting Definition Investigation
-
-Scientific question: Can resting be operationalized as:
-
-Surface interval (0–10 m),
-
-Low movement,
-
-Bout-based (minimum duration)?
-
-Diagnostics revealed:
-
-\~66,000 candidate resting samples existed.
-
-However, resting bouts were extremely fragmented:
-
-Median bout ≈ 0.1 s
-
-95th percentile ≈ 0.6 s
-
-Only 1 bout \>30 s
-
-No bouts ≥60 s
-
-Interpretation: Low-movement thresholding at 10 Hz produced flickering
-classifications rather than sustained resting bouts.
-
-Attempts made:
-
-Movement smoothing (10 s window).
-
-Gap-filling between short interruptions.
-
-Minimum bout duration enforcement (3 min).
-
-Resting remained effectively 0% after bout filtering, indicating that:
-
-Either true sustained resting is rare in this deployment,
-
-Or movement thresholding approach requires further refinement.
-
-4.  Speed Processing Improvements
-
-Coding improvements:
-
-Rebuilt speedJJ using robust NaN handling and runmean.
-
-Added fallback to speed.FN if JJ unavailable.
-
-Added jerk proxy (J) fallback if speed unavailable.
-
-Implemented diagnostic prints to confirm finite values in plotting
-windows.
-
-Resolved issue where speed was plotting but diagnostics were reporting
-NaNs due to window selection.
-
-5.  Structural Code Cleanup
-
-Major structural cleanup:
-
-Removed duplicated classifier blocks.
-
-Eliminated legacy variables (isForage, surfaceDepth_m, etc.).
-
-Ensured state assignment order prevents overwriting.
-
-Preallocated variables in export sections to remove MATLAB warnings.
-
-Added internal diagnostics to trace logical gates (surface interval,
-movement threshold, bout lengths).
-
-6.  Conceptual Progress
-
-Today clarified:
-
-Dive-bounded state switching logic.
-
-Hierarchical state precedence:
-
-Foraging (highest)
-
-Traveling
-
-Resting
-
-Exploring (default)
-
-The importance of aligning dive threshold depth with resting depth band.
-
-The behavioral implications of movement threshold choice at high
-sampling rates.
-
-Outstanding Questions for Next Session
-
-Is resting truly rare in this deployment, or is the movement threshold
-too sensitive?
-
-Should resting be defined relative to dive spacing (e.g., inter-foraging
-intervals) instead of instantaneous movement?
-
-Should movement be thresholded on a lower-frequency (e.g., 1 Hz)
-representation rather than 10 Hz?
-
-Is resting more appropriately defined by pitch/roll stability rather
-than speed alone?
-
-Overall Progress
-
-Foraging and traveling classification now structurally sound and
-biologically consistent.
-
-Lunges correctly integrated and producing realistic foraging
-proportions.
+-   Should resting use lower-frequency movement?
+-   Should resting be defined relative to inter-foraging gaps?
+-   Is pitch/roll stability a better resting proxy than speed?
